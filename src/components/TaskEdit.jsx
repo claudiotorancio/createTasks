@@ -11,7 +11,7 @@ function TaskEdit() {
   };
 
   return (
-    <div className="grid grid-cols-4 gap-2">
+    <div className="m grid grid-cols-4 gap-2">
       {tasks.map((task) => (
         editModeTaskId === task.id && (
           <EditTaskModal key={task.id} task={task}

@@ -5,7 +5,7 @@ function TaskCard({ task }) {
   const { deleteTask,  setEditModeTaskId } = useContext(TaskContext);
 
   return (
-    <div className="bg-gray-800 text-white p-4 rounded-md">
+    <div className="bg-gray-800 mx-auto text-white p-4 rounded-md">
       <h1 className="text-xl font-bold capitalize">{task.title}</h1>
       <p className="text-gray-500">{task.description}</p>
       <button

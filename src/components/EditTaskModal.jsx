@@ -1,10 +1,12 @@
+//EditTaskModal.jsx
+
 import { useContext, useState } from "react";
 import { TaskContext } from "../context/TaskContext";
 
 function EditTaskModal({ task, onClose }) {
   const { editTask } = useContext(TaskContext);
-  const [editedTitle, setEditedTitle] = useState('');
-  const [editedDescription, setEditedDescription] = useState('');
+  const [editedTitle, setEditedTitle] = useState("");
+  const [editedDescription, setEditedDescription] = useState("");
 
   const handleEditClick = () => {
     editTask({

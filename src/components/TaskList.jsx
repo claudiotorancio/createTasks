@@ -1,3 +1,5 @@
+//TaskList.jsx
+
 import TaskCard from "./TaskCard";
 import { useContext } from "react";
 import { TaskContext } from "../context/TaskContext";
@@ -13,9 +15,9 @@ function TaskList() {
 
   return (
     <div className="grid gap-2 ">
-      {tasks.map((task) => 
-      <TaskCard key={task.id} task={task} />
-      )}
+      {tasks.map((task) => (
+        <TaskCard key={task.id} task={task} />
+      ))}
     </div>
   );
 }

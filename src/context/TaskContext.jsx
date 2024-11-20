@@ -1,3 +1,5 @@
+//taskContext.jsx
+
 import { createContext, useState, useEffect } from "react";
 import { tasks as data } from "../data/tasks";
 
@@ -15,13 +17,12 @@ export function TaskContextProvider(props) {
     setTasks(data);
   }, []);
 
-
   function createTask(newTask) {
     setTasks((prevTasks) => [
       ...prevTasks,
       {
         title: newTask.title,
-        id: prevTasks.length + 1, 
+        id: prevTasks.length + 1,
         description: newTask.description,
       },
     ]);
@@ -38,7 +39,7 @@ export function TaskContextProvider(props) {
       )
     );
   }
-  
+
   return (
     <TaskContext.Provider
       value={{

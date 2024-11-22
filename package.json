@@ -3,14 +3,17 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-"scripts": {
-  "dev": "vite", 
+  "scripts": {
+  "dev": "vite",
+  "start:dev:prod": "npm run build && nodemon backend/index.js",
   "backend:dev": "nodemon backend/index.js",
-  "backend:start": "node src/backend/index.js", 
+  "backend:start": "node src/backend/index.js",
   "build": "vite build",
+  "start:prod": "npm run build && node backend/index.js",
   "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
   "preview": "vite preview"
 },
+
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",

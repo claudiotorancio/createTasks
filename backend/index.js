@@ -2,12 +2,14 @@ import express from "express";
 import dotenv from "dotenv";
 import router from "../api/router.js";
 import path from "path";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 
 // Middleware para manejar JSON
+app.use(cors());
 app.use(express.json());
 
 // Middleware para servir el frontend desde la carpeta "dist"

@@ -1,7 +1,7 @@
-//app.jsx
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
 import TaskEdit from "./components/TaskEdit";
+import ProductList from "./components/ProductList";
 
 function App() {
   return (
@@ -10,6 +10,7 @@ function App() {
         <TaskForm />
         <TaskList />
         <TaskEdit />
+        <ProductList /> {/* Mostrar productos */}
       </div>
     </main>
   );

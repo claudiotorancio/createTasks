@@ -1,27 +1,24 @@
 import { Router } from "express";
-import db from "../backend/db.js";
+import Producto from "../backend/models/productoModel.js";
 
 const router = Router();
 
 // Obtener todos los productos
-router.get("/", async (req, res) => {
+router.get("/api/getProducts", async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT * FROM productos");
-    res.json(rows);
+    const productos = await Producto.obtenerTodos();
+    res.json(productos);
   } catch (error) {
     res.status(500).json({ error: "Error al obtener productos" });
   }
 });
 
 // Agregar un nuevo producto
-router.post("/", async (req, res) => {
+router.post("/api/addProduct", async (req, res) => {
   const { nombre, precio } = req.body;
   try {
-    const [result] = await db.query(
-      "INSERT INTO productos (nombre, precio) VALUES (?, ?)",
-      [nombre, precio]
-    );
-    res.json({ id: result.insertId, nombre, precio });
+    const producto = await Producto.agregar(nombre, precio);
+    res.status(201).json(producto);
   } catch (error) {
     res.status(500).json({ error: "Error al agregar producto" });
   }

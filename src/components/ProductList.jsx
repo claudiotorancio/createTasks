@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { API_URL } from "../../backend/apiUrl.js";
 
+console.log(API_URL);
+
 const ProductList = () => {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,7 +15,7 @@ const ProductList = () => {
           throw new Error("Error al obtener los productos");
         }
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         setProductos(data);
       } catch (error) {
         console.error("Error:", error.message);

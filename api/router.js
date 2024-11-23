@@ -2,7 +2,7 @@ import { Router } from "express";
 import { getProducts } from "../backend/routes/productos/getProducts.js";
 import { addProducts } from "../backend/routes/productos/addProduct.js";
 import { addTask } from "../backend/routes/tasks/addTasls.js";
-import { getTasks } from "../backend/routes/tasks/gettasks.js";
+import { getTasks } from "../backend/routes/tasks/getTasks.js";
 
 const router = Router();
 

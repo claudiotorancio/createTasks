@@ -2,14 +2,14 @@
 
 import { API_URL } from "../../backend/apiUrl";
 
-export const fetchAddTask = async (title, descripcion) => {
+export const fetchAddTask = async (title, description) => {
   try {
     const response = await fetch(`${API_URL}/api/addTask`, {
       method: "POST", // Método HTTP
       headers: {
         "Content-Type": "application/json", // Indica que los datos se envían en formato JSON
       },
-      body: JSON.stringify({ title, descripcion }), // Convierte los datos a JSON para el cuerpo de la solicitud
+      body: JSON.stringify({ title, description }), // Convierte los datos a JSON para el cuerpo de la solicitud
     });
 
     // Verifica si la respuesta es exitosa

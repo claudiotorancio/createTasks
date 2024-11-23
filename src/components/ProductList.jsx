@@ -25,7 +25,7 @@ const ProductList = () => {
   }
 
   if (productos.length === 0) {
-    return <p className="text-white">No hay productos disponibles</p>;
+    return <p className="text-white"></p>;
   }
 
   return (

@@ -1,11 +1,21 @@
 import { createContext, useState, useEffect } from "react";
-import { fetchAddTask, fetchGetTasks } from "../services/taskServices.js";
+import {
+  fetchAddTask,
+  fetchGetTasks,
+  fetchDeleteTask,
+  fetchUpdateTask,
+} from "../services/taskServices.js";
+import ConfirmModal from "../components/confirmModal";
 
 export const TaskContext = createContext();
 
 export function TaskContextProvider(props) {
   const [tasks, setTasks] = useState([]);
   const [editModeTaskId, setEditModeTaskId] = useState(null);
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    taskId: null,
+  });
 
   function clearEditMode() {
     setEditModeTaskId(null);
@@ -26,10 +36,9 @@ export function TaskContextProvider(props) {
 
   // Función para crear una nueva tarea usando fetchAddTask
   const createTask = async (newTask) => {
-    // Validar que el título y la descripción no estén vacíos
     if (!newTask.title || !newTask.description) {
       console.error("El título y la descripción son obligatorios.");
-      return; // No enviar la solicitud si falta información
+      return;
     }
 
     try {
@@ -37,54 +46,41 @@ export function TaskContextProvider(props) {
         newTask.title,
         newTask.description
       );
-      setTasks((prevTasks) => [...prevTasks, createdTask]); // Agregar la tarea creada al estado
+      setTasks((prevTasks) => [...prevTasks, createdTask]);
     } catch (error) {
       console.error("Error al crear tarea:", error.message);
     }
   };
 
-  // Función para eliminar una tarea
-  const deleteTask = async (taskId) => {
+  // Función para abrir el modal de confirmación antes de eliminar
+  const openDeleteModal = (taskId) => {
+    setModalState({ isOpen: true, taskId });
+  };
+
+  // Función para cerrar el modal
+  const closeModal = () => {
+    setModalState({ isOpen: false, taskId: null });
+  };
+
+  // Función para confirmar la eliminación
+  const confirmDeleteTask = async () => {
+    const { taskId } = modalState;
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/deleteTask/${taskId}`,
-        {
-          method: "DELETE",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}: ${response.statusText}`);
-      }
-
-      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId)); // Actualiza el estado local
+      await fetchDeleteTask(taskId);
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
     } catch (error) {
       console.error("Error al eliminar tarea:", error.message);
     }
+    closeModal(); // Cerrar el modal después de confirmar
   };
 
   // Función para editar una tarea
   const editTask = async (updatedTask) => {
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/editTask/${updatedTask.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedTask),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}: ${response.statusText}`);
-      }
-
-      const updatedTaskData = await response.json();
+      await fetchUpdateTask(updatedTask);
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
-          task.id === updatedTaskData.id ? updatedTaskData : task
+          task.id === updatedTask.id ? { ...task, ...updatedTask } : task
         )
       );
     } catch (error) {
@@ -99,12 +95,20 @@ export function TaskContextProvider(props) {
         editModeTaskId,
         clearEditMode,
         setEditModeTaskId,
-        deleteTask,
+        deleteTask: openDeleteModal, // Cambiar deleteTask por la función de abrir modal
         createTask,
         editTask,
       }}
     >
       {props.children}
+
+      {/* Renderizar el modal de confirmación */}
+      <ConfirmModal
+        isOpen={modalState.isOpen}
+        onClose={closeModal}
+        onConfirm={confirmDeleteTask}
+        message="¿Estás seguro de que deseas eliminar esta tarea?"
+      />
     </TaskContext.Provider>
   );
 }

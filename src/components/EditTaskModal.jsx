@@ -1,21 +1,55 @@
-//EditTaskModal.jsx
-
 import { useContext, useState } from "react";
 import { TaskContext } from "../context/TaskContext";
 
+function ConfirmModal({ isOpen, onClose, onConfirm, message }) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-white p-6 rounded-md w-1/3">
+        <h2 className="text-lg font-bold mb-4">Confirmación</h2>
+        <p className="mb-6">{message}</p>
+        <div className="flex justify-end gap-4">
+          <button
+            onClick={onClose}
+            className="bg-gray-300 px-4 py-2 rounded-md hover:bg-gray-400"
+          >
+            Cancelar
+          </button>
+          <button
+            onClick={onConfirm}
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-400"
+          >
+            Confirmar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function EditTaskModal({ task, onClose }) {
   const { editTask } = useContext(TaskContext);
-  const [editedTitle, setEditedTitle] = useState("");
-  const [editedDescription, setEditedDescription] = useState("");
+  const [editedTitle, setEditedTitle] = useState(task.title || "");
+  const [editedDescription, setEditedDescription] = useState(
+    task.description || ""
+  );
+
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const handleEditClick = () => {
+    setShowConfirmModal(true); // Mostrar modal de confirmación
+  };
+
+  const confirmEdit = () => {
     editTask({
       ...task,
       title: editedTitle,
       description: editedDescription,
     });
 
-    onClose(); // Cerrar el modal después de completar la edición
+    setShowConfirmModal(false); // Ocultar modal de confirmación
+    onClose(); // Cerrar modal de edición
   };
 
   return (
@@ -47,6 +81,14 @@ function EditTaskModal({ task, onClose }) {
           </button>
         </div>
       </div>
+
+      {/* Modal de Confirmación */}
+      <ConfirmModal
+        isOpen={showConfirmModal}
+        onClose={() => setShowConfirmModal(false)}
+        onConfirm={confirmEdit}
+        message="¿Estás seguro de que deseas guardar los cambios realizados en esta tarea?"
+      />
     </div>
   );
 }

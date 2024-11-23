@@ -22,26 +22,26 @@ class Task {
     }
   }
 
-  static async agregar(title, descripcion) {
+  static async agregar(title, description) {
     try {
       const [result] = await db.query(
-        "INSERT INTO tasks (title, descripcion) VALUES (?, ?)",
-        [title, descripcion]
+        "INSERT INTO tasks (title, description) VALUES (?, ?)",
+        [title, description]
       );
-      return { id: result.insertId, title, descripcion };
+      return { id: result.insertId, title, description };
     } catch (error) {
       console.error("Error al agregar la tarea:", error);
       throw error;
     }
   }
 
-  static async actualizar(id, tarea, descripcion) {
+  static async actualizar(id, title, description) {
     try {
       await db.query(
-        "UPDATE tasks SET tarea = ?, descripcion = ? WHERE id = ?",
-        [tarea, descripcion, id]
+        "UPDATE tasks SET title = ?, description = ? WHERE id = ?",
+        [title, description, id]
       );
-      return { id, tarea, descripcion };
+      return { id, title, description };
     } catch (error) {
       console.error("Error al actualizar la tarea:", error);
       throw error;

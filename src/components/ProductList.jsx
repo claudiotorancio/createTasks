@@ -1,30 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { API_URL } from "../../backend/apiUrl.js";
-
-console.log(API_URL);
+import { fetchProductos } from "../services/productoServices";
 
 const ProductList = () => {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProductos = async () => {
+    const loadProductos = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/getProducts`);
-        if (!response.ok) {
-          throw new Error("Error al obtener los productos");
-        }
-        const data = await response.json();
-        // console.log(data);
+        const data = await fetchProductos();
         setProductos(data);
       } catch (error) {
-        console.error("Error:", error.message);
+        console.error("Error al cargar productos:", error.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProductos();
+    loadProductos();
   }, []);
 
   if (loading) {

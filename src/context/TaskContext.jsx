@@ -1,7 +1,5 @@
-//taskContext.jsx
-
 import { createContext, useState, useEffect } from "react";
-import { tasks as data } from "../data/tasks";
+import { fetchAddTask } from "../services/taskServices";
 
 export const TaskContext = createContext();
 
@@ -13,32 +11,80 @@ export function TaskContextProvider(props) {
     setEditModeTaskId(null);
   }
 
+  // Función para obtener tareas desde el backend
   useEffect(() => {
-    setTasks(data);
+    const fetchTasks = async () => {
+      try {
+        const data = await fetchAddTask();
+        setTasks(data);
+      } catch (error) {
+        console.error("Error al obtener tareas:", error.message);
+      }
+    };
+    fetchTasks(); // Obtén las tareas al montar el componente
   }, []);
 
-  function createTask(newTask) {
-    setTasks((prevTasks) => [
-      ...prevTasks,
-      {
-        title: newTask.title,
-        id: prevTasks.length + 1,
-        description: newTask.description,
-      },
-    ]);
-  }
+  // Función para crear una nueva tarea usando fetchAddTask
+  const createTask = async (newTask) => {
+    try {
+      const createdTask = await fetchAddTask(
+        newTask.title,
+        newTask.description
+      );
+      setTasks((prevTasks) => [...prevTasks, createdTask]); // Agrega la nueva tarea al estado
+    } catch (error) {
+      console.error("Error al crear tarea:", error.message);
+    }
+  };
 
-  function deleteTask(taskId) {
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
-  }
+  // Función para eliminar una tarea
+  const deleteTask = async (taskId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/deleteTask/${taskId}`,
+        {
+          method: "DELETE",
+        }
+      );
 
-  function editTask(updatedTask) {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === updatedTask.id ? { ...task, ...updatedTask } : task
-      )
-    );
-  }
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId)); // Actualiza el estado local
+    } catch (error) {
+      console.error("Error al eliminar tarea:", error.message);
+    }
+  };
+
+  // Función para editar una tarea
+  const editTask = async (updatedTask) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/editTask/${updatedTask.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedTask),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+
+      const updatedTaskData = await response.json();
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === updatedTaskData.id ? updatedTaskData : task
+        )
+      );
+    } catch (error) {
+      console.error("Error al editar tarea:", error.message);
+    }
+  };
 
   return (
     <TaskContext.Provider

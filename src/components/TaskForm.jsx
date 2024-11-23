@@ -1,5 +1,3 @@
-//TaskForm.jsx
-
 import React, { useState, useContext } from "react";
 import { TaskContext } from "../context/TaskContext";
 
@@ -10,10 +8,20 @@ function TaskForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validar que no haya campos vacíos
+    if (!title || !description) {
+      alert("Por favor, complete todos los campos.");
+      return;
+    }
+
+    // Crear la tarea
     createTask({
       title,
       description,
     });
+
+    // Limpiar los campos después de enviar
     setTitle("");
     setDescription("");
   };
@@ -26,18 +34,22 @@ function TaskForm() {
           placeholder="Escribe tu tarea"
           onChange={(e) => setTitle(e.target.value)}
           value={title}
-          className="bg-slate-300 p-3 w-full mb-2 "
+          className="bg-slate-300 p-3 w-full mb-2"
           autoFocus
         />
         <textarea
           placeholder="description"
-          onChange={(e) => {
-            setDescription(e.target.value);
-          }}
-          className="bg-slate-300 p-3 w-full mb-2 "
+          onChange={(e) => setDescription(e.target.value)}
+          className="bg-slate-300 p-3 w-full mb-2"
           value={description}
         ></textarea>
-        <button className="bg-indigo-500 px-3 py-1 text-white">Guardar</button>
+        <button
+          type="submit"
+          className="bg-indigo-500 px-3 py-1 text-white"
+          disabled={!title || !description} // Deshabilitar si los campos están vacíos
+        >
+          Guardar
+        </button>
       </form>
     </div>
   );

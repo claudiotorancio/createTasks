@@ -3,6 +3,7 @@
 import { API_URL } from "../../backend/apiUrl";
 
 export const fetchAddTask = async (title, description) => {
+  console.log(title, description);
   try {
     const response = await fetch(`${API_URL}/api/addTask`, {
       method: "POST", // Método HTTP
@@ -42,7 +43,6 @@ export const fetchGetTasks = async () => {
 
     // Devuelve el JSON de la respuesta
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Error al obtener las tareas:", error.message);

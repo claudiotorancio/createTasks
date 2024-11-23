@@ -11,8 +11,6 @@ export const fetchProductos = async () => {
     }
 
     const json = await response.json();
-
-    console.log(json);
     return json;
   } catch (error) {
     console.error("Error al realizar la solicitud:", error.message);

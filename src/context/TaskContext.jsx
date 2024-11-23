@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { fetchAddTask } from "../services/taskServices";
+import { fetchAddTask, fetchGetTasks } from "../services/taskServices.js";
 
 export const TaskContext = createContext();
 
@@ -15,7 +15,7 @@ export function TaskContextProvider(props) {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const data = await fetchAddTask();
+        const data = await fetchGetTasks();
         setTasks(data);
       } catch (error) {
         console.error("Error al obtener tareas:", error.message);
@@ -26,12 +26,18 @@ export function TaskContextProvider(props) {
 
   // Función para crear una nueva tarea usando fetchAddTask
   const createTask = async (newTask) => {
+    // Validar que el título y la descripción no estén vacíos
+    if (!newTask.title || !newTask.description) {
+      console.error("El título y la descripción son obligatorios.");
+      return; // No enviar la solicitud si falta información
+    }
+
     try {
       const createdTask = await fetchAddTask(
         newTask.title,
         newTask.description
       );
-      setTasks((prevTasks) => [...prevTasks, createdTask]); // Agrega la nueva tarea al estado
+      setTasks((prevTasks) => [...prevTasks, createdTask]); // Agregar la tarea creada al estado
     } catch (error) {
       console.error("Error al crear tarea:", error.message);
     }

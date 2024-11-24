@@ -1,5 +1,3 @@
-// EditTaskModal.jsx
-
 import { useContext, useState } from "react";
 import { TaskContext } from "../context/TaskContext";
 import ConfirmModal from "./confirmModal";
@@ -10,37 +8,43 @@ function EditTaskModal({ task, onClose }) {
   const [editedDescription, setEditedDescription] = useState(
     task.description || ""
   );
-
-  const [showConfirmModal, setShowConfirmModal] = useState(false); // Estado para controlar el modal de confirmación
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(""); // Estado para el mensaje de error
 
   const handleEditClick = () => {
-    // Si no hay cambios, no mostrar el modal de confirmación
     if (editedTitle === task.title && editedDescription === task.description) {
-      alert("No se han realizado cambios para guardar.");
+      setErrorMessage("No se han realizado cambios para guardar."); // Mostrar mensaje
       return;
     }
 
-    // Mostrar el modal de confirmación
+    // Limpiar mensaje de error si hay cambios
+    setErrorMessage("");
     setShowConfirmModal(true);
   };
 
   const confirmEdit = () => {
-    // Realizamos la edición de la tarea solo después de confirmar
     editTask({
       ...task,
       title: editedTitle,
       description: editedDescription,
     });
 
-    // Cerrar el modal de confirmación y el modal de edición
     setShowConfirmModal(false);
     onClose();
   };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-8 rounded-md">
+      <div className="bg-white p-8 rounded-md relative">
         <h2 className="text-2xl font-bold mb-4">Editar Tarea</h2>
+
+        {/* Mostrar el mensaje de error */}
+        {errorMessage && (
+          <div className="absolute top-2 left-2 right-2 bg-red-100 text-red-700 p-2 rounded-md text-sm">
+            {errorMessage}
+          </div>
+        )}
+
         <input
           value={editedTitle}
           onChange={(e) => setEditedTitle(e.target.value)}
@@ -70,8 +74,8 @@ function EditTaskModal({ task, onClose }) {
       {/* Modal de confirmación */}
       <ConfirmModal
         isOpen={showConfirmModal}
-        onClose={() => setShowConfirmModal(false)} // Cerrar el modal de confirmación sin hacer nada
-        onConfirm={confirmEdit} // Confirmar y editar la tarea
+        onClose={() => setShowConfirmModal(false)}
+        onConfirm={confirmEdit}
         message="¿Estás seguro de que deseas guardar los cambios realizados en esta tarea?"
       />
     </div>

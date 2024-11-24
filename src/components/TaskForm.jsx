@@ -1,10 +1,12 @@
 import React, { useState, useContext } from "react";
 import { TaskContext } from "../context/TaskContext";
+import { useNavigate } from "react-router-dom";
 
 function TaskForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const { createTask } = useContext(TaskContext);
+  const navigate = useNavigate(); // Hook para navegación
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -24,6 +26,9 @@ function TaskForm() {
     // Limpiar los campos después de enviar
     setTitle("");
     setDescription("");
+
+    // Redirigir a la lista de tareas
+    navigate("/tasks");
   };
 
   return (

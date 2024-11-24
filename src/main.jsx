@@ -1,15 +1,18 @@
-//main.jsx
-
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom"; // Importar BrowserRouter
 import App from "./App.jsx";
 import "./index.css";
 import { TaskContextProvider } from "./context/TaskContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <TaskContextProvider>
-      <App />
-    </TaskContextProvider>
+    <BrowserRouter>
+      {" "}
+      {/* Envolver tu aplicación con BrowserRouter */}
+      <TaskContextProvider>
+        <App />
+      </TaskContextProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );

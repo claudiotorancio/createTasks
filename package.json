@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "start:dev:prod": "concurrently \"vite build --watch\" \"nodemon backend/index.js\"",
+    "start:dev:prod": "concurrently \"vite build\" \"nodemon backend/index.js\"",
     "build": "vite build ",
     "start": "NODE_ENV=production node backend/index.js",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",

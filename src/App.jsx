@@ -40,6 +40,14 @@ function App() {
                     Lista de Tareas
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    to="/products"
+                    className="hover:text-indigo-500 transition-colors duration-300"
+                  >
+                    Productos
+                  </Link>
+                </li>
               </ul>
             </nav>
 
@@ -97,14 +105,11 @@ function App() {
         <div className="mb-8">
           <Routes>
             <Route path="/" element={<TaskForm />} />
+            <Route path="/tasks" element={<TaskList />} />
+            <Route path="/products" element={<ProductList />} />
           </Routes>
+          <TaskEdit />
         </div>
-
-        <Routes>
-          <Route path="/tasks" element={<TaskList />} />
-        </Routes>
-        <TaskEdit />
-        {/* <ProductList /> */}
       </div>
     </main>
   );

@@ -18,7 +18,7 @@ router.post("/api/addTask", addTask);
 router.get("/api/getTasks", getTasks);
 router.delete("/api/deleteTask/:taskId", deleteTask);
 router.put("/api/updateTask/:taskId", updateTask);
-router.get("/tasks", tasks);
+router.get("/api/tasks", tasks);
 router.get("/products");
 
 export default router;

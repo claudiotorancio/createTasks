@@ -34,7 +34,7 @@ function App() {
                 </li>
                 <li>
                   <Link
-                    to="/tasks"
+                    to="/api/tasks"
                     className="hover:text-indigo-500 transition-colors duration-300"
                   >
                     Lista de Tareas
@@ -105,8 +105,8 @@ function App() {
         <div className="mb-8">
           <Routes>
             <Route path="/" element={<TaskForm />} />
-            <Route path="/tasks" element={<TaskList />} />
-            <Route path="/products" element={<ProductList />} />
+            <Route path="/api/tasks" element={<TaskList />} />
+            <Route path="/api/products" element={<ProductList />} />
           </Routes>
           <TaskEdit />
         </div>

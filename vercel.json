@@ -1,14 +1,14 @@
 {
   "version": 2,
 
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/"
-    }
-  ],
+
 
   "routes": [
+    
+    {
+      "src": "/",
+      "dest": "backend/index.js"
+    },
     {
       "src": "/api/(.*)",
       "dest": "api/router.js",
@@ -19,10 +19,12 @@
         "Access-Control-Allow-Headers": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
         "Access-Control-Allow-Credentials": "true"
       }
-    },
+    }
+  ],
+  "rewrites": [
     {
-      "src": "/",
-      "dest": "backend/index.js"
+      "source": "/(.*)",
+      "destination": "/"
     }
   ]
 }

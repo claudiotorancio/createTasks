@@ -5,7 +5,6 @@ import { TaskContext } from "../context/TaskContext";
 
 function TaskCard({ task }) {
   const { deleteTask, setEditModeTaskId } = useContext(TaskContext);
-  console.log(deleteTask);
   return (
     <div className="bg-gray-800 text-white p-4 rounded-md shadow-lg mx-auto w-full sm:w-96 max-w-full">
       <h1 className="text-lg sm:text-xl font-bold capitalize">{task.title}</h1>

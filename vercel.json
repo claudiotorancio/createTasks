@@ -19,7 +19,7 @@
       }
     },
     {
-      "src": "/api/(.*)",
+      "src": "/",
       "dest": "backend/index.js"
     }
   ]

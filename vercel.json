@@ -19,7 +19,7 @@
       }
     },
     {
-      "src": "/",
+      "src": "/tasks",
       "dest": "backend/index.js"
     }
   ]

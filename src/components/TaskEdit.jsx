@@ -1,12 +1,10 @@
-//TaskEdit,jsx
-
 import { useContext } from "react";
-
 import { TaskContext } from "../context/TaskContext";
 import EditTaskModal from "./EditTaskModal";
 
 function TaskEdit() {
-  const { tasks, editModeTaskId, setEditModeTaskId } = useContext(TaskContext);
+  const { tasks, editModeTaskId, setEditModeTaskId, editTask } =
+    useContext(TaskContext);
 
   const handleCloseModal = () => {
     setEditModeTaskId(null);
@@ -21,6 +19,7 @@ function TaskEdit() {
               key={task.id}
               task={task}
               onClose={handleCloseModal}
+              onEdit={editTask} // Pasar la función editTask como prop
             />
           )
       )}

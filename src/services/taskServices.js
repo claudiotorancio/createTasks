@@ -2,7 +2,6 @@ import { API_URL } from "../../backend/apiUrl";
 
 // Función para agregar una tarea
 export const fetchAddTask = async (title, description) => {
-  console.log(title);
   try {
     const response = await fetch(`${API_URL}/api/addTask`, {
       method: "POST", // Método HTTP

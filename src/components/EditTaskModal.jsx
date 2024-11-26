@@ -35,7 +35,7 @@ function EditTaskModal({ task, onClose }) {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-8 rounded-md relative">
+      <div className="bg-white p-8  text-black rounded-md relative">
         <h2 className="text-2xl font-bold mb-4">Editar Tarea</h2>
 
         {/* Mostrar el mensaje de error */}

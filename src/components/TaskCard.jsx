@@ -1,10 +1,11 @@
-//TaskCard.jsx
-
 import { useContext } from "react";
 import { TaskContext } from "../context/TaskContext";
+import TaskEdit from "./TaskEdit";
 
 function TaskCard({ task }) {
-  const { deleteTask, setEditModeTaskId } = useContext(TaskContext);
+  const { deleteTask, setEditModeTaskId, editModeTaskId } =
+    useContext(TaskContext);
+
   return (
     <div className="bg-gray-800 text-white p-4 rounded-md shadow-lg mx-auto w-full sm:w-96 max-w-full">
       <h1 className="text-lg sm:text-xl font-bold capitalize">{task.title}</h1>
@@ -25,6 +26,7 @@ function TaskCard({ task }) {
           Actualizar Tarea
         </button>
       </div>
+      {editModeTaskId === task.id && <TaskEdit />}
     </div>
   );
 }

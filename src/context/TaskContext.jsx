@@ -9,17 +9,13 @@ import ConfirmModal from "../components/confirmModal";
 export const TaskContext = createContext();
 
 export function TaskContextProvider(props) {
+  console.log(JSON.stringify(props));
   const [tasks, setTasks] = useState([]);
   const [editModeTaskId, setEditModeTaskId] = useState(null);
   const [modalState, setModalState] = useState({
     isOpen: false,
     taskId: null,
   });
-  // const [loading, setLoading] = useState(true);
-
-  function clearEditMode() {
-    setEditModeTaskId(null);
-  }
 
   // Función para crear una nueva tarea usando fetchAddTask
   const createTask = async (newTask) => {
@@ -81,7 +77,6 @@ export function TaskContextProvider(props) {
         tasks,
         setTasks,
         editModeTaskId,
-        clearEditMode,
         setEditModeTaskId,
         deleteTask: openDeleteModal, // Cambiar deleteTask por la función de abrir modal
         createTask,

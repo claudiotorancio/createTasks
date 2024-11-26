@@ -2,6 +2,11 @@
   "version": 2,
 
   "routes": [
+    {
+      "rewrites":  [
+        {"source": "/(.*)", "destination": "/"}
+      ]
+    },
  
     {
       "src": "/api/(.*)",

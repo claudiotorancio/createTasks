@@ -22,7 +22,15 @@ app.use("/", router);
 
 // Ruta por defecto para manejar el frontend
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "dist", "index.html"));
+  const route = req.path;
+
+  if (route === "/tasks") {
+    // Devuelve una respuesta para esta ruta específica
+    res.json({ message: "Estás en /tasks" });
+  } else {
+    // Devuelve el index.html para cualquier otra ruta
+    res.sendFile(path.join(__dirname, "dist", "index.html"));
+  }
 });
 
 // Configurar el puerto

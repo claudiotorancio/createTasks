@@ -9,7 +9,6 @@ import ConfirmModal from "../components/confirmModal";
 export const TaskContext = createContext();
 
 export function TaskContextProvider(props) {
-  console.log(JSON.stringify(props));
   const [tasks, setTasks] = useState([]);
   const [editModeTaskId, setEditModeTaskId] = useState(null);
   const [modalState, setModalState] = useState({

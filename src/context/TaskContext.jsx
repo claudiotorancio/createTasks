@@ -9,19 +9,15 @@ import ConfirmModal from "../components/confirmModal";
 
 export const TaskContext = createContext();
 
-export function TaskContextProvider(props) {
+export function TaskContextProvider({ children }) {
   const [tasks, setTasks] = useState([]);
   const [editModeTaskId, setEditModeTaskId] = useState(null);
   const [modalState, setModalState] = useState({
     isOpen: false,
     taskId: null,
   });
+  const [loading, setLoading] = useState(true);
 
-  function clearEditMode() {
-    setEditModeTaskId(null);
-  }
-
-  // Función para obtener tareas desde el backend
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -29,40 +25,57 @@ export function TaskContextProvider(props) {
         setTasks(data);
       } catch (error) {
         console.error("Error al obtener tareas:", error.message);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchTasks(); // Obtén las tareas al montar el componente
+    fetchTasks();
   }, []);
 
-  // Función para crear una nueva tarea usando fetchAddTask
-  const createTask = async (newTask) => {
-    if (!newTask.title || !newTask.description) {
-      console.error("El título y la descripción son obligatorios.");
-      return;
-    }
+  // Proporciona el estado `loading` al contexto
+  const contextValue = {
+    tasks,
+    loading, // Aquí está disponible para los consumidores
+    editModeTaskId,
+    clearEditMode: () => setEditModeTaskId(null),
+    setEditModeTaskId,
+    deleteTask: (taskId) => setModalState({ isOpen: true, taskId }),
+    createTask: async (newTask) => {
+      if (!newTask.title || !newTask.description) {
+        console.error("El título y la descripción son obligatorios.");
+        return;
+      }
 
-    try {
-      const createdTask = await fetchAddTask(
-        newTask.title,
-        newTask.description
-      );
-      setTasks((prevTasks) => [...prevTasks, createdTask]);
-    } catch (error) {
-      console.error("Error al crear tarea:", error.message);
-    }
+      try {
+        const createdTask = await fetchAddTask(
+          newTask.title,
+          newTask.description
+        );
+        setTasks((prevTasks) => [...prevTasks, createdTask]);
+      } catch (error) {
+        console.error("Error al crear tarea:", error.message);
+      }
+    },
+    editTask: async (updatedTask) => {
+      try {
+        await fetchUpdateTask(updatedTask);
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task.id === updatedTask.id ? { ...task, ...updatedTask } : task
+          )
+        );
+      } catch (error) {
+        console.error("Error al editar tarea:", error.message);
+      }
+    },
   };
 
-  // Función para abrir el modal de confirmación antes de eliminar
-  const openDeleteModal = (taskId) => {
-    setModalState({ isOpen: true, taskId });
-  };
+  const closeModal = () =>
+    setModalState({
+      isOpen: false,
+      taskId: null,
+    });
 
-  // Función para cerrar el modal
-  const closeModal = () => {
-    setModalState({ isOpen: false, taskId: null });
-  };
-
-  // Función para confirmar la eliminación
   const confirmDeleteTask = async () => {
     const { taskId } = modalState;
     try {
@@ -71,38 +84,21 @@ export function TaskContextProvider(props) {
     } catch (error) {
       console.error("Error al eliminar tarea:", error.message);
     }
-    closeModal(); // Cerrar el modal después de confirmar
-  };
-
-  // Función para editar una tarea
-  const editTask = async (updatedTask) => {
-    try {
-      await fetchUpdateTask(updatedTask);
-      setTasks((prevTasks) =>
-        prevTasks.map((task) =>
-          task.id === updatedTask.id ? { ...task, ...updatedTask } : task
-        )
-      );
-    } catch (error) {
-      console.error("Error al editar tarea:", error.message);
-    }
+    closeModal();
   };
 
   return (
-    <TaskContext.Provider
-      value={{
-        tasks,
-        editModeTaskId,
-        clearEditMode,
-        setEditModeTaskId,
-        deleteTask: openDeleteModal, // Cambiar deleteTask por la función de abrir modal
-        createTask,
-        editTask,
-      }}
-    >
-      {props.children}
+    <TaskContext.Provider value={contextValue}>
+      {/* Manejo básico de la carga */}
+      {loading ? (
+        <div className="text-center text-white">
+          <p className="text-xl">Cargando tareas...</p>
+        </div>
+      ) : (
+        children
+      )}
 
-      {/* Renderizar el modal de confirmación */}
+      {/* Modal de confirmación */}
       <ConfirmModal
         isOpen={modalState.isOpen}
         onClose={closeModal}

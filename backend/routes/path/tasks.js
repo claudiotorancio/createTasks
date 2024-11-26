@@ -9,7 +9,7 @@ const output = path.resolve(__dirname, "../../../src/components");
 
 const tasks = async (req, res) => {
   try {
-    res.sendFile(path.join(output, "TaskList"));
+    res.sendFile(path.join(output, "TaskList.jsx"));
   } catch (error) {
     console.error("Error al enviar el archivo:", error.message);
     res.status(500).send({ error: "Error al enviar el archivo." });

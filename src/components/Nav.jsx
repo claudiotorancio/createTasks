@@ -13,7 +13,7 @@ const Nav = () => {
     <div>
       <div className="flex items-center justify-between">
         {/* Logo o Título */}
-        <h1 className="text-white text-3xl font-bold">Mi Dulce Valentin</h1>
+        <h1 className="text-white text-3xl font-bold">MDV</h1>
 
         {/* Barra de navegación */}
         <nav className="lg:flex hidden items-center space-x-6">

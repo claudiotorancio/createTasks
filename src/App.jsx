@@ -20,7 +20,7 @@ function App() {
         <Banner
           title="¡Bienvenido a nuestra tienda!"
           subtitle="Explora nuestros productos exclusivos"
-          imageUrl="https://picture-alura.s3.us-east-2.amazonaws.com/1712622378820.jpg" // Reemplaza con tu URL
+          imageUrl="https://myimagescnd.s3.us-east-2.amazonaws.com/banner-image.png" // Reemplaza con tu URL
         />
 
         {/* Contenido principal */}

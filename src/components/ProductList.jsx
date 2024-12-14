@@ -30,7 +30,9 @@ const ProductList = () => {
 
   return (
     <div className="mt-5">
-      <h2 className="text-white text-xl font-bold">Productos</h2>
+      <h2 className="text-black text-3xl font-bold mb-4 text-center">
+        Productos
+      </h2>
       <ul className="mt-3">
         {productos.map((producto) => (
           <li

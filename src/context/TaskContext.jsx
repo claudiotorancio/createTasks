@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 import {
   fetchAddTask,
   fetchDeleteTask,
@@ -18,16 +18,28 @@ export function TaskContextProvider(props) {
 
   // Función para crear una nueva tarea usando fetchAddTask
   const createTask = async (newTask) => {
-    if (!newTask.title || !newTask.description) {
-      console.error("El título y la descripción son obligatorios.");
+    const { title, description, image } = newTask;
+
+    console.log(newTask);
+
+    if (!title || !description || !image) {
+      console.error("Todos los campos son obligatorios.");
       return;
     }
 
     try {
-      const createdTask = await fetchAddTask(
-        newTask.title,
-        newTask.description
-      );
+      // Crear un FormData para enviar datos y la imagen
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("image", image);
+
+      // for (const [key, value] of formData.entries()) {
+      //   console.log(`${key}:`, value);
+      // }
+
+      const createdTask = await fetchAddTask(formData);
+
       setTasks((prevTasks) => [...prevTasks, createdTask]);
     } catch (error) {
       console.error("Error al crear tarea:", error.message);

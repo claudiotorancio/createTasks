@@ -44,8 +44,8 @@ function TaskList() {
 
   return (
     <div className="p-4">
-      <h1 className="text-white text-3xl font-bold mb-4 text-center">
-        Lista de Tareas
+      <h1 className="text-black text-3xl font-bold mb-4 text-center">
+        Destacados
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {tasks.map((task) => (

@@ -22,19 +22,19 @@ class Task {
     }
   }
 
-  static async agregar(title, description) {
-    try {
-      const [result] = await db.query(
-        "INSERT INTO tasks (title, description) VALUES (?, ?)",
-        [title, description]
-      );
-      return { id: result.insertId, title, description };
-    } catch (error) {
-      console.error("Error al agregar la tarea:", error);
-      throw error;
-    }
-  }
+  static async agregar(data) {
+    const { title, description, imagePath } = data;
 
+    const [result] = await db.query(
+      "INSERT INTO tasks (title, description, image) VALUES (?, ?, ?)",
+      [title, description, imagePath]
+    );
+
+    return {
+      id: result.insertId,
+      ...data,
+    };
+  }
   static async actualizar(id, title, description) {
     try {
       await db.query(

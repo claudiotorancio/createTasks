@@ -1,56 +1,73 @@
 // backend/models/taskModel.js
-import db from "../db.js";
+import pkg from "@prisma/client";
+
+// Usamos el cliente global de node_modules (Prisma v6)
+const { PrismaClient } = pkg;
+const prisma = new PrismaClient();
 
 class Task {
+  // OBTENER TODAS LAS TAREAS
   static async obtenerTodos() {
     try {
-      const [rows] = await db.query("SELECT * FROM tasks");
-      return rows;
+      // Prisma expone el modelo en minúsculas: prisma.task
+      return await prisma.task.findMany();
     } catch (error) {
       console.error("Error al obtener tareas:", error);
       throw error;
     }
   }
 
+  // OBTENER TAREA POR ID
   static async obtenerPorId(id) {
     try {
-      const [rows] = await db.query("SELECT * FROM tasks WHERE id = ?", [id]);
-      return rows[0]; // Devuelve la primera tarea encontrada
+      return await prisma.task.findUnique({
+        where: { id: Number(id) }, // Prisma exige que el ID sea numérico si en el esquema es un Int
+      });
     } catch (error) {
       console.error("Error al obtener la tarea:", error);
       throw error;
     }
   }
 
+  // AGREGAR TAREA (¡Acá es donde se guarda en la Base de Datos!)
   static async agregar(data) {
     const { title, description, imagePath } = data;
-
-    const [result] = await db.query(
-      "INSERT INTO tasks (title, description, image) VALUES (?, ?, ?)",
-      [title, description, imagePath]
-    );
-
-    return {
-      id: result.insertId,
-      ...data,
-    };
+    try {
+      return await prisma.task.create({
+        data: {
+          title,
+          description,
+          image: imagePath, // Mapeamos imagePath al campo 'image' de tu schema.prisma
+        },
+      });
+    } catch (error) {
+      console.error("Error al agregar la tarea en Prisma:", error);
+      throw error;
+    }
   }
+
+  // ACTUALIZAR TAREA
   static async actualizar(id, title, description) {
     try {
-      await db.query(
-        "UPDATE tasks SET title = ?, description = ? WHERE id = ?",
-        [title, description, id]
-      );
-      return { id, title, description };
+      return await prisma.task.update({
+        where: { id: Number(id) },
+        data: {
+          title,
+          description,
+        },
+      });
     } catch (error) {
       console.error("Error al actualizar la tarea:", error);
       throw error;
     }
   }
 
+  // ELIMINAR TAREA
   static async eliminar(id) {
     try {
-      await db.query("DELETE FROM tasks WHERE id = ?", [id]);
+      await prisma.task.delete({
+        where: { id: Number(id) },
+      });
       return { message: "Tarea eliminada correctamente" };
     } catch (error) {
       console.error("Error al eliminar la tarea:", error);

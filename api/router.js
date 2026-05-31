@@ -6,8 +6,11 @@ import { getTasks } from "../backend/routes/tasks/getTasks.js";
 import { deleteTask } from "../backend/routes/tasks/deleteTask.js";
 import { updateTask } from "../backend/routes/tasks/updateTask.js";
 import { uploadSingle } from "../backend/routes/tasks/uploadImage.js";
+import authRoutes from "../backend/routes/login/authRoutes.js";
 
 const router = Router();
+
+router.use("/api/auth", authRoutes);
 
 // Productos
 router.get("/api/getProducts", getProducts);

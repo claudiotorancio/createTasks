@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 import "./index.css";
 import { TaskContextProvider } from "./context/TaskContext";
+import { AuthContextProvider } from "./context/authContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -13,7 +14,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       {" "}
       {/* Envolver tu aplicación con BrowserRouter */}
       <TaskContextProvider>
-        <App />
+        <AuthContextProvider>
+          <App />
+        </AuthContextProvider>
       </TaskContextProvider>
     </BrowserRouter>
   </React.StrictMode>

@@ -1,59 +1,71 @@
 // backend/models/productoModel.js
+import pkg from "@prisma/client";
 
-import db from "../db.js";
+// Usamos el cliente global de node_modules (Prisma v6)
+const { PrismaClient } = pkg;
+const prisma = new PrismaClient();
 
 class Producto {
+  // OBTENER TODOS LOS PRODUCTOS
   static async obtenerTodos() {
     try {
-      const [rows] = await db.query("SELECT * FROM productos");
-      return rows;
+      // Prisma maneja la pluralización automáticamente o usa el nombre del modelo en minúsculas (producto)
+      return await prisma.producto.findMany();
     } catch (error) {
       console.error("Error al obtener productos:", error);
       throw error;
     }
   }
 
+  // OBTENER POR ID
   static async obtenerPorId(id) {
     try {
-      const [rows] = await db.query("SELECT * FROM productos WHERE id = ?", [
-        id,
-      ]);
-      return rows[0]; // Devuelve el primer producto encontrado
+      return await prisma.producto.findUnique({
+        where: { id: Number(id) }, // Aseguramos que el ID vaya como número
+      });
     } catch (error) {
       console.error("Error al obtener el producto:", error);
       throw error;
     }
   }
 
+  // AGREGAR PRODUCTO
   static async agregar(nombre, precio) {
     try {
-      const [result] = await db.query(
-        "INSERT INTO productos (nombre, precio) VALUES (?, ?)",
-        [nombre, precio]
-      );
-      return { id: result.insertId, nombre, precio };
+      return await prisma.producto.create({
+        data: {
+          nombre,
+          precio: Number(precio), // Aseguramos que el precio mantenga el tipo correcto
+        },
+      });
     } catch (error) {
       console.error("Error al agregar el producto:", error);
       throw error;
     }
   }
 
+  // ACTUALIZAR PRODUCTO
   static async actualizar(id, nombre, precio) {
     try {
-      await db.query(
-        "UPDATE productos SET nombre = ?, precio = ? WHERE id = ?",
-        [nombre, precio, id]
-      );
-      return { id, nombre, precio };
+      return await prisma.producto.update({
+        where: { id: Number(id) },
+        data: {
+          nombre,
+          precio: Number(precio),
+        },
+      });
     } catch (error) {
       console.error("Error al actualizar el producto:", error);
       throw error;
     }
   }
 
+  // ELIMINAR PRODUCTO
   static async eliminar(id) {
     try {
-      await db.query("DELETE FROM productos WHERE id = ?", [id]);
+      await prisma.producto.delete({
+        where: { id: Number(id) },
+      });
       return { message: "Producto eliminado correctamente" };
     } catch (error) {
       console.error("Error al eliminar el producto:", error);

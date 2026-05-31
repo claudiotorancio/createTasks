@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+model Producto {
+  id        Int      @id @default(autoincrement())
+  nombre    String   @db.VarChar(255)
+  precio    Decimal  @db.Decimal(10, 2) // Ideal para manejar dinero con precisión
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("productos") // Respeta el nombre de tu tabla original en minúsculas
+}
+
+model Task {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  description String?  @db.Text
+  image       String?  @db.Text           // Aquí va la ruta/URL de S3 (imagePath)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("tasks")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique @db.VarChar(255) // Añadimos @unique para evitar correos duplicados
+  password  String   @db.VarChar(255)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("users")
+}

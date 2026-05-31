@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -9,40 +8,48 @@ const Nav = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Elementos del menú
+  const menuItems = [
+    { name: "Inicio", path: "/" },
+    { name: "Destacados", path: "/tasks" },
+    { name: "Productos", path: "/products" },
+  ];
+
+  // Botón de iniciar sesión
+  const authLinks = (
+    <div className="space-x-4">
+      <Link
+        to="/login"
+        className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg"
+      >
+        Iniciar Sesión
+      </Link>
+    </div>
+  );
+
   return (
     <div>
+      {/* Barra de navegación para escritorio */}
       <div className="flex items-center justify-between">
         {/* Logo o Título */}
         <h1 className="text-white text-3xl font-bold">MDV</h1>
 
-        {/* Barra de navegación */}
+        {/* Barra de navegación (Escritorio) */}
         <nav className="lg:flex hidden items-center space-x-6">
           <ul className="flex space-x-6 text-white font-semibold">
-            <li>
-              <Link
-                to="/"
-                className="hover:text-indigo-500 transition-colors duration-300"
-              >
-                Inicio
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/tasks"
-                className="hover:text-indigo-500 transition-colors duration-300"
-              >
-                Destacados
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/products"
-                className="hover:text-indigo-500 transition-colors duration-300"
-              >
-                Productos
-              </Link>
-            </li>
+            {menuItems.map((item, index) => (
+              <li key={index}>
+                <Link
+                  to={item.path}
+                  className="hover:text-indigo-500 transition-colors duration-300"
+                >
+                  {item.name}
+                </Link>
+              </li>
+            ))}
           </ul>
+
+          {authLinks}
         </nav>
 
         {/* Menú hamburguesa para móviles */}
@@ -72,34 +79,20 @@ const Nav = () => {
       {isMenuOpen && (
         <div className="lg:hidden bg-gray-800 mt-4 p-4 rounded-lg">
           <ul className="space-y-4 text-white font-semibold">
-            <li>
-              <Link
-                to="/"
-                className="hover:text-indigo-500 transition-colors duration-300"
-                onClick={() => setIsMenuOpen(false)} // Cerrar menú al hacer clic
-              >
-                Inicio
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/tasks"
-                className="hover:text-indigo-500 transition-colors duration-300"
-                onClick={() => setIsMenuOpen(false)} // Cerrar menú al hacer clic
-              >
-                Lista de Tareas
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/products"
-                className="hover:text-indigo-500 transition-colors duration-300"
-                onClick={() => setIsMenuOpen(false)} // Cerrar menú al hacer clic
-              >
-                Productos
-              </Link>
-            </li>
+            {menuItems.map((item, index) => (
+              <li key={index}>
+                <Link
+                  to={item.path}
+                  className="hover:text-indigo-500 transition-colors duration-300"
+                  onClick={() => setIsMenuOpen(false)} // Cerrar menú al hacer clic
+                >
+                  {item.name}
+                </Link>
+              </li>
+            ))}
           </ul>
+
+          {authLinks}
         </div>
       )}
     </div>

@@ -4,7 +4,7 @@ import TaskForm from "./components/TaskForm";
 import ProductList from "./components/ProductList";
 import Nav from "./components/Nav";
 import Banner from "./components/banner";
-import LoginRegister from "./components/loginRegister";
+import LoginRegister from "./components/LoginRegister";
 
 function App() {
   return (

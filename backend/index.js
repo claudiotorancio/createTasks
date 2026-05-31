@@ -9,8 +9,8 @@ dotenv.config();
 const app = express();
 
 // Middleware para manejar JSON
-app.use(urlencoded({ extended: false }));
-app.use(express.json());
+app.use(urlencoded({ limit: "50mb", extended: true }));
+app.use(express.json({ limit: "50mb" }));
 app.use(cors());
 
 // Middleware para servir el frontend desde la carpeta "dist"

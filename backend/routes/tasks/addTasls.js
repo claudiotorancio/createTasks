@@ -2,8 +2,13 @@ import Task from "../../models/taskModel.js";
 
 export const addTask = async (req, res) => {
   try {
-    const { title, description } = req.body;
+   const title = req.body.title || req.query.title;
+    const description = req.body.description || req.query.description;
 
+    if (!title || !description) {
+      return res.status(400).json({ error: "Falta el título o la descripción" });
+    }
+    
     const imagePath = req.file.location;
 
     const createTaskData = {

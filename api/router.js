@@ -7,6 +7,7 @@ import { deleteTask } from "../backend/routes/tasks/deleteTask.js";
 import { updateTask } from "../backend/routes/tasks/updateTask.js";
 import { uploadSingle } from "../backend/routes/tasks/uploadImage.js";
 import authRoutes from "../backend/routes/login/authRoutes.js";
+import { addTaskFromMobile } from "../backend/routes/tasks/addTaskFromMobile.js";
 
 const router = Router();
 
@@ -21,5 +22,6 @@ router.post("/api/addTask", uploadSingle, addTask);
 router.get("/api/getTasks", getTasks);
 router.delete("/api/deleteTask/:taskId", deleteTask);
 router.put("/api/updateTask/:taskId", updateTask);
+router.post("/api/addTaskFromMobile", addTaskFromMobile);
 
 export default router;

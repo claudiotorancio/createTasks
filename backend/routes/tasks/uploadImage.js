@@ -31,5 +31,5 @@ const upload = () =>
     }),
   });
 
-//export const uploadSingle = upload(process.env.BUCKET_AWS).single("image");
-export const uploadSingle = upload().any();
+export const uploadSingle = upload(process.env.BUCKET_AWS).single("image");
+
